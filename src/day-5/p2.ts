@@ -1,0 +1,43 @@
+import fs from 'node:fs'
+
+type Range = [number, number];
+
+function isOverlapping(r1: Range, r2: Range) {
+    return r1[0] <= r2[0] && r2[0] <= r1[1];
+}
+
+const rawData = fs.readFileSync('./data/day-5/input.txt', 'ascii').split('\n');
+const overlappingRanges: Range[] = [];
+const ranges: Range[] = [];
+
+rawData.forEach((data) => {
+    const curElement = data.split('-');
+    if (curElement.length === 2) {
+        const a = Number(curElement[0]);
+        const b = Number(curElement[1]);
+        overlappingRanges.push([a, b]);
+    }
+});
+
+overlappingRanges.sort((a, b) => {
+    if (a[0] === b[0]) return b[1] - a[1];
+    return a[0] - b[0];
+});
+
+overlappingRanges.forEach((curRange) => {
+    if (ranges.length === 0) ranges.push(curRange);
+    const targetRange = ranges.at(-1)!;
+    if (isOverlapping(targetRange, curRange)) {
+        ranges.pop();
+        ranges.push([targetRange[0], Math.max(curRange[1], targetRange[1])]);
+    }
+    else {
+        ranges.push(curRange);
+    }
+});
+
+let ans = 0;
+ranges.forEach((curRange) => {
+    ans += curRange[1] - curRange[0] + 1;
+});
+console.log(ans);
