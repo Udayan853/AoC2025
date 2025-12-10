@@ -27,3 +27,7 @@ A collection of all my solutions built as a part of `Advent of Code 2025`
 - Day 6
   - [x] part 1
   - [x] part 2
+
+- Day 7
+  - [x] part 1
+  - [x] part 2
